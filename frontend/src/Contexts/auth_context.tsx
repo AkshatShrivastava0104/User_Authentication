@@ -71,11 +71,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
 // Add this export if missing
 export const useAuth = () => {
-  // Mock implementation or actual logic
-  return {
-    user: { username: "JohnDoe" },
-    isAuthenticated: true,
-    login : (userData: User, token: string) => console.log("Logged in", userData, token),
-    logout: () => console.log("Logged out"),
-  };
+  const context = React.useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
 };

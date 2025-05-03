@@ -1,7 +1,12 @@
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigate } from "react-router-dom";
+import { useNavigate , Link} from "react-router-dom";
+
+import "../styles/styles.css";
+import { useAuth } from "../Contexts/auth_context";
+
+
 import "../styles/styles.css";
 
 const Schema = z.object({
@@ -17,10 +22,17 @@ const Login: React.FC = () => {
   });
 
   const navigate = useNavigate();
+  const { login } = useAuth();
+
 
   const onSubmit = (data: any) => {
-    console.log("Login Successful!", data);
-    alert("Login Successful!");
+    // Create a user object from the form data
+    const userData = {
+      username: data.email.split('@')[0], // Simple username from email
+      email: data.email
+    };
+    const token = "fake-token"; // In real app, this would come from your API
+    login(userData, token);
     navigate("/home");
   };
 
@@ -45,6 +57,10 @@ const Login: React.FC = () => {
           required
         />
         {errors.password && <span>{errors.password.message}</span>}
+
+        <Link to="/signup" className="font-medium text-blue-600 hover:text-blue-500">
+              create a new account
+            </Link>
 
         <button type="submit">Submit</button>
       </form>
