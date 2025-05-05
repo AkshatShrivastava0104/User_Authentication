@@ -1,19 +1,20 @@
-
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import authRoutes from './routes/authRoutes.js';
- 
 const app = express();
 dotenv.config();
+
+
+app.use(express.json());
 
 app.use(cors({
     origin: 'http://localhost:5173',
     credentials: true,
 }));
+ 
 
-app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
@@ -36,3 +37,6 @@ mongoose.connect(process.env.MONGO_URI, {}).then(() => {
 });
 
 console.log("Connecting to:", process.env.MONGO_URI); 
+
+
+console.log(process.env.JWT_SECRET)

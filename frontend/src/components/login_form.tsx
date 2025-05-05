@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigate , Link} from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 import "../styles/styles.css";
 import { useAuth } from "../Contexts/auth_context";
@@ -25,16 +25,38 @@ const Login: React.FC = () => {
   const { login } = useAuth();
 
 
-  const onSubmit = (data: any) => {
-    // Create a user object from the form data
-    const userData = {
-      username: data.email.split('@')[0], // Simple username from email
-      email: data.email
-    };
-    const token = "fake-token"; // In real app, this would come from your API
-    login(userData, token);
-    navigate("/home");
+  const onSubmit = async (data: any) => {
+    try {
+      const res = await fetch("http://localhost:3000/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: data.email,
+          password: data.password,
+        }),
+      });
+  
+      const resData = await res.json();
+  
+      if (res.ok) {
+        const userData = {
+          username: data.email.split('@')[0],
+          email: data.email,
+        };
+        const token = resData.token;
+        login(userData, token);
+        navigate("/home");
+      } else {
+        alert(resData.message || "Login failed");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      alert("Something went wrong!");
+    }
   };
+  
 
   return (
     <div id="root">
@@ -59,8 +81,8 @@ const Login: React.FC = () => {
         {errors.password && <span>{errors.password.message}</span>}
 
         <Link to="/signup" className="font-medium text-blue-600 hover:text-blue-500">
-              create a new account
-            </Link>
+          create a new account
+        </Link>
 
         <button type="submit">Submit</button>
       </form>

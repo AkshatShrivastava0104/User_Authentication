@@ -6,7 +6,7 @@ import Signup from './components/signup-form';
 import Home from './components/home';
 import ProtectedRoute from './route/ProtectedRoute';
 import './App.css';
-
+ 
 function App() {
   return (
       <AuthProvider>

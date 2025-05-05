@@ -20,14 +20,42 @@ const Signup: React.FC = () => {
     const { login } = useAuth();
 
     const onSubmit = async (data: any) => {
-        // Create user object with both username and email
-        const userData = {
-            username: data.username,
-            email: data.email
-        };
-        const token = "fake-token";
-        login(userData, token);
-        navigate("/home", { state: { fromSignup: true } });
+
+        try {
+            const res = await fetch("http://localhost:3000/signup", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    username: data.username,
+                    email: data.email,
+                    password: data.password
+                })
+            });
+
+
+            const resData = await res.json();
+
+            console.log("Response data:", resData); 
+
+            if (res.ok) {
+                const userData = {
+                    username: data.username,
+                    email: data.email,
+                };
+
+                const token = resData.token || "token from backend";
+                login(userData, token);
+                navigate("/home", { state: { fromSignup: true } });
+            } else {
+                alert(resData.message || "Signup failed");
+            }
+        }
+        catch (error) {
+            console.error("Signup error:", error);
+            alert("Something went wrong!");
+        }
     };
 
     return (
