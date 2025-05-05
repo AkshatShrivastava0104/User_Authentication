@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import authRoutes from './routes/authRoutes.js';
-
+ 
 const app = express();
 dotenv.config();
 
@@ -17,11 +17,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
-app.use('/api/auth', authRoutes);
+app.use('/', authRoutes);
 
-app.get("/", (req, res) => {
-    res.send("Akshat Shrivastava");
-});
+// app.get("/api", (req, res) => {
+//     res.send("Akshat Shrivastava");
+// });
 
 const PORT = process.env.PORT || 3000;
 
