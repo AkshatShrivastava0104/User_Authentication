@@ -81,7 +81,7 @@ const Login: React.FC = () => {
         {errors.password && <span>{errors.password.message}</span>}
 
         <Link to="/signup" className="font-medium text-blue-600 hover:text-blue-500">
-          create a new account
+          Create a New Account
         </Link>
 
         <button type="submit">Submit</button>
