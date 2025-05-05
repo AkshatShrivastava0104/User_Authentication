@@ -4,7 +4,6 @@ import { useAuth } from "../Contexts/auth_context";
 import { useLocation } from "react-router-dom";
 
 
-
 const Home: React.FC = () => {
   const { user, isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
